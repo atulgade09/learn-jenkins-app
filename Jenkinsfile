@@ -19,12 +19,18 @@ pipeline {
                 '''
             }
         }
-        stage('test'){
+        stage('Test'){
             steps{
             sh '''
                 test -f build/index.html 
             '''
             }
+        }
+    }
+
+    post{
+        always{
+            junit 'test-result/junit.xml'
         }
     }
 }
