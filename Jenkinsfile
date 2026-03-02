@@ -93,5 +93,27 @@ pipeline {
                         '''
                     }
                 }
+                stage('PROD E2E') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                        }
+                    }
+                environment{
+                    CI_ENVIRONMENT_URL = 'https://preeminent-dragon-5582fb.netlify.app'
+                }
+                    steps {
+                        sh '''
+                            npx playwright test  --reporter=html
+                        '''
+                    }
+
+                    post {
+                        always {
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright PROD E2E Report', reportTitles: '', useWrapperFileDirectly: true])
+                        }
+                    }
+                }
     }
 }
