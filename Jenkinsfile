@@ -51,11 +51,6 @@ pipeline {
                 }
 
                 stage('E2E') {
-                    environment{
-                        NETLIFY_SITE_ID = '1480fcfc-8b9d-4336-ab3d-a551a672fbde'
-                        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-                        REACT_APP_VERSION = "1.0.$BUILD_ID"
-                    }
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
